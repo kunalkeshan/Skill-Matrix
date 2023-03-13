@@ -1,0 +1,3 @@
+interface StudentLoginRequest {
+	message: string;
+}
