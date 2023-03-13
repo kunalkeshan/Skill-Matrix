@@ -102,9 +102,16 @@ export const getServerSideProps = withSessionSsr(
 					permanent: true,
 				},
 			};
+		} else if (req.url?.includes('name')) {
+			return {
+				props: {},
+			};
 		}
 		return {
-			props: {},
+			redirect: {
+				destination: `/student/register`,
+				permanent: true,
+			},
 		};
 	}
 );
