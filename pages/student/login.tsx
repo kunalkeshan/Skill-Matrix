@@ -34,6 +34,10 @@ const StudentLoginPage = () => {
 		});
 	};
 
+	const handleAuth = () => {
+		signInWithRedirect(auth, provider);
+	};
+
 	useEffect(() => {
 		const handleGoogleRedirectAuth = async () => {
 			dispatch(showLoading(true));
@@ -44,25 +48,17 @@ const StudentLoginPage = () => {
 					GoogleAuthProvider.credentialFromResult(result);
 				const token = credential!.accessToken;
 				const user = result.user;
-				const response = await axios.post<StudentLoginRequest>(
-					'/api/student/login',
-					{
+				const docRef = doc(db, 'students', user.email!);
+				const docSnap = await getDoc(docRef);
+				const data = docSnap.data();
+				if (docSnap.exists() && data?.regNo !== null) {
+					await axios.post<AxiosBaseResponse>('/api/student/login', {
 						email: user.email,
 						token,
-					}
-				);
-				switch (response.data.message) {
-					case 'student/login-successful': {
-						const docRef = doc(db, 'students', user.email!);
-						const docSnap = await getDoc(docRef);
-						const data = docSnap.data();
-						router.push(`/student/${data?.regNo}`);
-						break;
-					}
-					case 'student/onboard-redirect': {
-						router.push('/student/register');
-						break;
-					}
+					});
+					router.push(`/student/${data?.regNo}`);
+				} else {
+					router.push('/student/register');
 				}
 			} catch (error) {
 				if (error instanceof AxiosError) {
@@ -81,7 +77,6 @@ const StudentLoginPage = () => {
 						}
 					}
 				}
-				console.log(error);
 				await signOut(auth);
 			} finally {
 				dispatch(showLoading(false));
@@ -90,10 +85,6 @@ const StudentLoginPage = () => {
 
 		handleGoogleRedirectAuth();
 	}, []);
-
-	const handleAuth = () => {
-		signInWithRedirect(auth, provider);
-	};
 
 	return (
 		<>
@@ -115,7 +106,7 @@ export default StudentLoginPage;
 export const getServerSideProps = withSessionSsr(
 	async function getServerSideProps({ req }) {
 		const user = req.session.user;
-		if (user?.token) {
+		if (user?.email) {
 			const docRef = doc(db, 'students', user.email!);
 			const docSnap = await getDoc(docRef);
 			const data = docSnap.data();
