@@ -17,5 +17,6 @@ export const ironOptions: IronSessionOptions = {
 };
 
 export const AppRegEx = {
-	studentCollegeEmail: new RegExp(/[a-z]{2}[0-9]{4}@srmist\.edu\.in/, 'ig'),
+	studentCollegeEmail: new RegExp(/^[a-z]{2}[0-9]{4}@srmist\.edu\.in$/, 'ig'),
+	studentRegNo: new RegExp(/^[A-Z]{2}[0-9]{13}$/, 'ig'),
 };

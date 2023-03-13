@@ -1,3 +1,3 @@
-interface StudentLoginRequest {
+interface AxiosBaseResponse {
 	message: string;
 }
