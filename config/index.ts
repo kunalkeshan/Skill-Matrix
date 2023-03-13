@@ -15,3 +15,7 @@ export const ironOptions: IronSessionOptions = {
 		secure: isProduction,
 	},
 };
+
+export const AppRegEx = {
+	studentCollegeEmail: new RegExp(/[a-z]{2}[0-9]{4}@srmist\.edu\.in/, 'ig'),
+};
