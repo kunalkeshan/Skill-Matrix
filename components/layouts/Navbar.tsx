@@ -26,7 +26,7 @@ const Navbar = () => {
 	};
 	return (
 		<nav className='w-full bg-white text-primary px-6 md:py-7 py-3'>
-			<div className='mx-auto max-w-5xl flex items-center justify-between'>
+			<div className='mx-auto max-w-7xl flex items-center justify-between'>
 				<Link
 					href='/'
 					className='font-semibold flex gap-2 items-center text-2xl transition-all duration-300 hover:scale-95 active:scale-105'

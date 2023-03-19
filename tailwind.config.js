@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem'
+      },
       fontFamily: {
         primary: 'var(--font-newsreader)',
         secondary: 'var(--font-kumbh-sans)'
@@ -20,6 +24,15 @@ module.exports = {
         secondary2: '#FCDF69',
         secondary3: '#F99D77',
         neutral: '#0F437F',
+      },
+      keyframes: {
+        floating: {
+          '0%, 100%': { transform: 'translate(0,  0px)' },
+          '50%': { transform: 'translate(0, 15px)' }
+        }
+      },
+      animation: {
+        float: 'floating 3s ease-in-out infinite'
       }
     },
   },

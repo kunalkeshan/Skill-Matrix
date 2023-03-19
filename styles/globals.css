@@ -19,4 +19,8 @@
 	h6 {
 		@apply font-primary;
 	}
+
+	.btn {
+		@apply bg-primary text-sm md:text-base text-white rounded-5xl uppercase font-bold py-6 px-10 transition-all duration-300 hover:scale-95 hover:bg-neutral;
+	}
 }
