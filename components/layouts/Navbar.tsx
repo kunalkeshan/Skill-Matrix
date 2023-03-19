@@ -25,7 +25,7 @@ const Navbar = () => {
 		setOpen(false);
 	};
 	return (
-		<nav className='w-full bg-white text-primary px-6 md:py-7 py-3'>
+		<nav className='w-full bg-white text-primary px-6 md:py-7 py-3 z-50'>
 			<div className='mx-auto max-w-7xl flex items-center justify-between'>
 				<Link
 					href='/'
