@@ -39,4 +39,53 @@ export const PRIVACY_POLICIES = [
 		],
 	},
 ];
-export const TERMS_OF_CONDITIONS = [];
+export const TERMS_OF_CONDITIONS = [
+	{
+		title: 'Acceptance of Terms',
+		body: [
+			'By using our website, you agree to these Terms and Conditions.',
+		],
+	},
+	{
+		title: 'User Conduct',
+		body: [
+			'You agree to use our website only for lawful purposes and in a way that does not infringe on the rights of others.',
+		],
+	},
+	{
+		title: 'Intellectual Property',
+		body: [
+			'All content on our website is the property of Skill Matrix and is protected by intellectual property laws. You may not use our content without our permission.',
+		],
+	},
+	{
+		title: 'Disclaimer of Warranties:',
+		body: [
+			'We make no warranties about the accuracy or completeness of the information on our website. We are not responsible for any errors or omissions in the content.',
+		],
+	},
+	{
+		title: 'Limitation of Liability',
+		body: [
+			'We are not liable for any damages resulting from your use of our website or our services. In no event shall our liability exceed the amount you paid for our services.',
+		],
+	},
+	{
+		title: 'Indemnification',
+		body: [
+			'You agree to indemnify and hold us harmless from any claims or damages resulting from your use of our website or our services.',
+		],
+	},
+	{
+		title: 'Governing Law',
+		body: [
+			'These Terms and Conditions are governed by the laws of India. Any disputes arising from these Terms and Conditions will be resolved in the courts of India.',
+		],
+	},
+	{
+		title: 'Changes to these Terms',
+		body: [
+			'We may update these Terms and Conditions from time to time. If we make material changes, we will notify you via email or through our website.',
+		],
+	},
+];
