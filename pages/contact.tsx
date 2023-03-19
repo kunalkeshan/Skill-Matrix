@@ -1,7 +1,8 @@
+import PublicLayout from '@/layouts/PublicLayout';
 import React from 'react';
 
 const ContactPage = () => {
-	return <div>ContactPage</div>;
+	return <PublicLayout>ContactPage</PublicLayout>;
 };
 
 export default ContactPage;

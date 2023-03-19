@@ -1,7 +1,8 @@
+import PublicLayout from '@/layouts/PublicLayout';
 import React from 'react';
 
 const PrivacyPolicyPage = () => {
-	return <div>PrivacyPolicyPage</div>;
+	return <PublicLayout>PrivacyPolicyPage</PublicLayout>;
 };
 
 export default PrivacyPolicyPage;
