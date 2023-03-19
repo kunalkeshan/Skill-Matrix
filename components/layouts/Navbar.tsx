@@ -34,8 +34,11 @@ const Navbar = () => {
 					<CloudQueueIcon /> <p>Skill-Matrix</p>
 				</Link>
 				<ul className='md:flex gap-8 hidden'>
-					{NAV_LINKS.map((link) => (
-						<li className='text-lg transition-all duration-300 hover:text-secondary3 font-bold'>
+					{NAV_LINKS.map((link, index) => (
+						<li
+							key={index}
+							className='text-lg transition-all duration-300 hover:text-secondary3 font-bold'
+						>
 							<Link href={link.url}>{link.name}</Link>
 						</li>
 					))}
@@ -71,8 +74,11 @@ const Navbar = () => {
 						</button>
 					</div>
 					<ul className='flex flex-col gap-4 max-w-5xl mt-8'>
-						{NAV_LINKS.map((link) => (
-							<li className='text-3xl transition-all duration-300 hover:text-secondary3 font-bold'>
+						{NAV_LINKS.map((link, index) => (
+							<li
+								key={index}
+								className='text-3xl transition-all duration-300 hover:text-secondary3 font-bold'
+							>
 								<Link href={link.url} onClick={handleClose}>
 									{link.name}
 								</Link>
