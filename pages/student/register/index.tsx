@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { AppRegEx } from '@/config';
 import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
+import Image from 'next/image';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -113,10 +114,53 @@ const StudentRegisterPage = () => {
 				<title>Student Registration</title>
 			</Head>
 			<PublicLayout>
-				<button onClick={handleAuth}>
-					Signup with google (using srm email)
-				</button>
-				{error.error && <p className='text-red-500'>{error.message}</p>}
+				<section className='w-full min-h-screen px-6 flex md:items-center justify-center py-20 md:py-0'>
+					<div className='bg-white max-w-lg px-6 py-12 rounded-2xl shadow-lg flex flex-col items-center justify-center gap-8'>
+						<div className='rounded-full overflow-hidden w-[10rem] h-[10rem] bg-secondary1 p-5 flex items-center justify-center'>
+							<Image
+								src='/assets/svgs/register.svg'
+								width={100}
+								height={100}
+								alt='Skill-Matrix'
+								className='w-full h-auto object-contain'
+							/>
+						</div>
+						<h1 className='font-primary text-primary text-5xl md:text-7xl font-semibold'>
+							Register
+						</h1>
+						<p className='text-neutral text-xl text-center'>
+							Create a account using your SRM mail id to and get
+							started with the marks calculation.
+						</p>
+						<button
+							onClick={handleAuth}
+							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-105'
+						>
+							<div className='w-16 h-16'>
+								<Image
+									src='/assets/svgs/google-icon.svg'
+									width={100}
+									height={100}
+									alt='Skill-Matrix'
+									className='w-full h-auto object-contain'
+								/>
+							</div>
+							<p className='flex flex-col text-left font-semibold'>
+								<span className='text-lg md:text-xl'>
+									Register with Google
+								</span>
+								<span className='text-xs md:text-sm'>
+									(use srm email)
+								</span>
+							</p>
+						</button>
+						{error.error && (
+							<p className='text-red-500 w-full text-center px-4 py-2 border border-red-500 bg-red-200 rounded-xl'>
+								{error.message}
+							</p>
+						)}
+					</div>
+				</section>
 			</PublicLayout>
 		</>
 	);
