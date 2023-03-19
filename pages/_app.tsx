@@ -24,9 +24,7 @@ export default function App({ Component, ...rest }: AppProps) {
 	const { pageProps } = props;
 	return (
 		<Provider store={store}>
-			<main
-				className={`${newsreader.variable} ${kumbhSans.variable} font-primary`}
-			>
+			<main className={`${newsreader.variable} ${kumbhSans.variable}`}>
 				<Component {...pageProps} />
 				<Backdrop />
 			</main>

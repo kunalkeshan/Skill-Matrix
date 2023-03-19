@@ -1,12 +1,14 @@
 import Footer from '@/components/layouts/Footer';
 import Navbar from '@/components/layouts/Navbar';
 import React, { PropsWithChildren } from 'react';
-import { NextPage } from 'next';
+import Headroom from 'react-headroom';
 
-const PublicLayout: NextPage<PropsWithChildren> = ({ children }) => {
+const PublicLayout: React.FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<>
-			<Navbar />
+			<Headroom>
+				<Navbar />
+			</Headroom>
 			{children}
 			<Footer />
 		</>
