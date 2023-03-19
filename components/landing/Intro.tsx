@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const Intro = () => {
 	return (
-		<div className='z-10 relative w-full overflow-hidden min-h-screen flex items-center justify-center px-6 py-20 md:py-0'>
-			<div className='z-[5] w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-4'>
+		<section className='relative w-full overflow-hidden min-h-screen flex items-center justify-center px-6 py-20 md:py-0'>
+			<div className='z-0 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-4'>
 				<div className='text-center md:text-left'>
 					<h1 className='font-primary md:max-w-none max-w-lg mx-auto text-primary text-4xl md:text-5xl font-semibold'>
 						Streamline the student-project matching process with
@@ -39,10 +39,10 @@ const Intro = () => {
 					</div>
 				</div>
 			</div>
-			<div className='z-0 w-full md:w-1/2 bg-primary h-full md:top-0 right-0 absolute -bottom-[55%]' />
-			<div className='w-80 h-80 rounded-full bg-secondary2 absolute z-0 -left-10 -top-16 animate-float' />
-			<div className='w-80 h-80 hidden md:block bg-secondary3 rotate-45 absolute z-0 -left-10 bottom-20 animate-float' />
-		</div>
+			<div className='-z-10 w-full md:w-1/2 bg-primary h-full md:top-0 right-0 absolute -bottom-[55%]' />
+			<div className='w-80 h-80 rounded-full bg-secondary2 absolute -z-10 -left-10 -top-16 animate-float' />
+			<div className='w-80 h-80 bg-secondary3 hidden md:block absolute -z-10 -left-10 bottom-20 rotate-45' />
+		</section>
 	);
 };
 

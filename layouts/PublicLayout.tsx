@@ -6,7 +6,7 @@ import Headroom from 'react-headroom';
 const PublicLayout: React.FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<>
-			<Headroom>
+			<Headroom className='z-50'>
 				<Navbar />
 			</Headroom>
 			{children}
