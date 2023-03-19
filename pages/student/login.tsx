@@ -135,7 +135,7 @@ const StudentLoginPage = () => {
 							</p>
 						</button>
 						{error.error && (
-							<p className='text-red-500 px-4 py-2 border border-red-500 bg-red-200 rounded-xl'>
+							<p className='text-red-500 w-full text-center px-4 py-2 border border-red-500 bg-red-200 rounded-xl'>
 								{error.message}
 							</p>
 						)}
