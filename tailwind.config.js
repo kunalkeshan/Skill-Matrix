@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        primary: 'var(--font-newsreader)',
+        secondary: 'var(--font-kumbh-sans)'
+      },
       colors: {
         primary: '#064EA4',
         secondary: '#E1EDFB',

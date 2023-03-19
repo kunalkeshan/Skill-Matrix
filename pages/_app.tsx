@@ -3,14 +3,33 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import wrapper from '@/store/store';
 import Backdrop from '@/components/reusable/Backdrop';
+import { Newsreader, Kumbh_Sans } from 'next/font/google';
+
+const newsreader = Newsreader({
+	style: ['italic', 'normal'],
+	subsets: ['latin'],
+	weight: ['200', '300', '400', '500', '600', '700', '800'],
+	variable: '--font-newsreader',
+});
+
+const kumbhSans = Kumbh_Sans({
+	style: ['normal'],
+	subsets: ['latin'],
+	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+	variable: '--font-kumbh-sans',
+});
 
 export default function App({ Component, ...rest }: AppProps) {
 	const { store, props } = wrapper.useWrappedStore(rest);
 	const { pageProps } = props;
 	return (
 		<Provider store={store}>
-			<Component {...pageProps} />
-			<Backdrop />
+			<main
+				className={`${newsreader.variable} ${kumbhSans.variable} font-primary`}
+			>
+				<Component {...pageProps} />
+				<Backdrop />
+			</main>
 		</Provider>
 	);
 }
