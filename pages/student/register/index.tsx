@@ -15,6 +15,7 @@ import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { AppRegEx } from '@/config';
 import Head from 'next/head';
+import PublicLayout from '@/layouts/PublicLayout';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -111,12 +112,12 @@ const StudentRegisterPage = () => {
 			<Head>
 				<title>Student Registration</title>
 			</Head>
-			<div>
+			<PublicLayout>
 				<button onClick={handleAuth}>
 					Signup with google (using srm email)
 				</button>
 				{error.error && <p className='text-red-500'>{error.message}</p>}
-			</div>
+			</PublicLayout>
 		</>
 	);
 };

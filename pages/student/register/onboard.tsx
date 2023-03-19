@@ -11,6 +11,7 @@ import { useAppDispatch } from '@/hooks/hooks';
 import { showLoading } from '@/store/features/app';
 import axios, { AxiosError } from 'axios';
 import { getAuth, GoogleAuthProvider, signOut } from 'firebase/auth';
+import PublicLayout from '@/layouts/PublicLayout';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -62,7 +63,7 @@ const StudentRegistrationOnboardPage = () => {
 			<Head>
 				<title>Student Onboarding</title>
 			</Head>
-			<div>
+			<PublicLayout>
 				<Formik
 					initialValues={initialValues}
 					validationSchema={studentOnboardSchema}
@@ -82,7 +83,7 @@ const StudentRegistrationOnboardPage = () => {
 						<button type='submit'>Submit</button>
 					</Form>
 				</Formik>
-			</div>
+			</PublicLayout>
 		</>
 	);
 };

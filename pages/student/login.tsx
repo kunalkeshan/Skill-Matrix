@@ -15,6 +15,7 @@ import { db } from '@/firebase';
 import { useAppDispatch } from '@/hooks/hooks';
 import { showLoading } from '@/store/features/app';
 import { useRouter } from 'next/router';
+import PublicLayout from '@/layouts/PublicLayout';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -91,12 +92,12 @@ const StudentLoginPage = () => {
 			<Head>
 				<title>Student Login</title>
 			</Head>
-			<div>
+			<PublicLayout>
 				<button onClick={handleAuth}>
 					Login with Google (use srm email)
 				</button>
 				{error.error && <p className='text-red-500'>{error.message}</p>}
-			</div>
+			</PublicLayout>
 		</>
 	);
 };
