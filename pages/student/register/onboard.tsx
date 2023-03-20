@@ -64,25 +64,79 @@ const StudentRegistrationOnboardPage = () => {
 				<title>Student Onboarding</title>
 			</Head>
 			<PublicLayout>
-				<Formik
-					initialValues={initialValues}
-					validationSchema={studentOnboardSchema}
-					onSubmit={handleStudentOnboard}
-				>
-					<Form>
-						<Field name='name' type='text' placeholder='Name' />
-						<ErrorMessage component='div' name='name' />
-						<Field name='phone' type='tel' placeholder='Phone' />
-						<ErrorMessage component='div' name='phone' />
-						<Field
-							name='regNo'
-							type='text'
-							placeholder='Register number'
-						/>
-						<ErrorMessage component='div' name='regNo' />
-						<button type='submit'>Submit</button>
-					</Form>
-				</Formik>
+				<section className='w-full min-h-screen px-6 flex md:items-center justify-center py-20 md:py-0'>
+					<div className='bg-white max-w-lg px-6 py-12 rounded-2xl shadow-lg flex flex-col items-center justify-center gap-8'>
+						<Formik
+							initialValues={initialValues}
+							validationSchema={studentOnboardSchema}
+							onSubmit={handleStudentOnboard}
+						>
+							{({ errors }) => (
+								<Form className='flex flex-col w-full min-w-[280px]'>
+									<h1 className='w-full text-center text-3xl md:text-5xl font-primary font-semibold text-primary'>
+										Student Onboarding
+									</h1>
+									<p className='max-w-sm w-full text-center font-medium text-neutral mx-auto'>
+										Fill in the details below to complete
+										your account setup. You can edit them
+										later in your profile page.
+									</p>
+									<Field
+										name='name'
+										type='text'
+										placeholder='Name'
+										autocomplete='off'
+										className={`input ${
+											errors.name
+												? '!border-red-500 placeholder:text-red-500'
+												: ''
+										}`}
+									/>
+									<ErrorMessage
+										component='div'
+										name='name'
+										className='input-error'
+									/>
+									<Field
+										name='phone'
+										type='tel'
+										autocomplete='off'
+										placeholder='Phone'
+										className={`input ${
+											errors.phone
+												? '!border-red-500 placeholder:text-red-500'
+												: ''
+										}`}
+									/>
+									<ErrorMessage
+										component='div'
+										name='phone'
+										className='input-error'
+									/>
+									<Field
+										name='regNo'
+										type='text'
+										autocomplete='off'
+										placeholder='Register number'
+										className={`input ${
+											errors.regNo
+												? '!border-red-500 placeholder:text-red-500'
+												: ''
+										}`}
+									/>
+									<ErrorMessage
+										component='div'
+										name='regNo'
+										className='input-error'
+									/>
+									<button type='submit' className='btn mt-8'>
+										Submit
+									</button>
+								</Form>
+							)}
+						</Formik>
+					</div>
+				</section>
 			</PublicLayout>
 		</>
 	);
