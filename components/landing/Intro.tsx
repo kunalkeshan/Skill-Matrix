@@ -20,10 +20,10 @@ const Intro = () => {
 							Calculate Now
 						</Link>
 						<Link
-							href={'/#features'}
+							href={'/leaderboard'}
 							className='btn !bg-gray-300 hover:!bg-gray-400 !text-neutral'
 						>
-							Explore
+							Leaderboard
 						</Link>
 					</div>
 				</div>
