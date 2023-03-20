@@ -118,7 +118,7 @@ const StudentLoginPage = () => {
 						</p>
 						<button
 							onClick={handleAuth}
-							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-105'
+							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-100'
 						>
 							<div className='w-12 h-12'>
 								<Image
