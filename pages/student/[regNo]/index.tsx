@@ -1,4 +1,4 @@
-import { app, db } from '@/firebase';
+import { db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React from 'react';
@@ -7,25 +7,19 @@ import {
 	NextPage,
 	GetServerSidePropsResult,
 } from 'next';
-import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
-
-const auth = getAuth(app);
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const StudentProfilePage: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ student }) => {
 	const router = useRouter();
-
-	const handleLogout = async () => {
-		signOut(auth);
-		await axios.post('/api/student/logout');
-		router.push('/student/login');
-	};
 
 	return (
 		<>
@@ -34,9 +28,9 @@ const StudentProfilePage: NextPage<
 			</Head>
 			<PublicLayout>
 				<section className='w-full min-h-screen'>
-					<header className='w-full min-h-[320px] bg-secondary1'>
-						<div>
-							<div className='max-w-md animate-float'>
+					<header className='w-full min-h-[320px] bg-secondary1 relative'>
+						<div className='max-w-5xl bg-white rounded-3xl px-10 py-8 grid grid-cols-1 md:grid-cols-2 gap-8 absolute -translate-x-1/2 -translate-y-1/2 top-full left-1/2'>
+							<div className='max-w-[12rem] rounded-full overflow-hidden mx-auto w-full'>
 								<Image
 									src={student.avatar}
 									width={100}
@@ -46,11 +40,13 @@ const StudentProfilePage: NextPage<
 								/>
 							</div>
 							<div>
-								<h1>{student.name}</h1>
+								<h1 className='font-primary text-primary text-xl md:text-3xl font-semibold'>
+									{student.name}
+								</h1>
+								<ul></ul>
 							</div>
 						</div>
 					</header>
-					<button onClick={handleLogout}>Sign Out</button>
 				</section>
 			</PublicLayout>
 		</>

@@ -3,9 +3,15 @@ import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { TransitionProps } from '@mui/material/transitions';
-import { NAV_LINKS } from '@/data/navigation';
+import { NAV_LINKS, AUTH_NAV_LINKS } from '@/data/navigation';
 import React, { useState } from 'react';
 import { Dialog, Slide } from '@mui/material';
+import { useRouter } from 'next/router';
+import { getAuth, signOut } from 'firebase/auth';
+import axios from 'axios';
+import { app } from '@/firebase';
+
+const auth = getAuth(app);
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
@@ -16,13 +22,23 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const Navbar = () => {
+interface NavProps {
+	student?: Student;
+}
+
+const Navbar: React.FC<NavProps> = ({ student }) => {
+	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => {
 		setOpen(true);
 	};
 	const handleClose = () => {
 		setOpen(false);
+	};
+	const handleLogout = async () => {
+		signOut(auth);
+		await axios.post('/api/student/logout');
+		router.push('/student/login');
 	};
 	return (
 		<nav className='w-full bg-white text-primary px-6 md:py-7 py-3 z-50 shadow-lg'>
@@ -34,14 +50,31 @@ const Navbar = () => {
 					<CloudQueueIcon /> <p>Skill-Matrix</p>
 				</Link>
 				<ul className='md:flex gap-8 hidden'>
-					{NAV_LINKS.map((link, index) => (
-						<li
-							key={index}
-							className='text-lg transition-all duration-300 hover:text-secondary3'
-						>
-							<Link href={link.url}>{link.name}</Link>
-						</li>
-					))}
+					{!student ? (
+						NAV_LINKS.map((link, index) => (
+							<li
+								key={index}
+								className='text-lg transition-all duration-300 hover:text-secondary3'
+							>
+								<Link href={link.url}>{link.name}</Link>
+							</li>
+						))
+					) : (
+						<>
+							<li></li>
+							{AUTH_NAV_LINKS.map((link, index) => (
+								<li
+									key={index}
+									className='text-lg transition-all duration-300 hover:text-secondary3'
+								>
+									<Link href={link.url}>{link.name}</Link>
+								</li>
+							))}
+							<li>
+								<button onClick={handleLogout}>Sign Out</button>
+							</li>
+						</>
+					)}
 				</ul>
 				<button
 					onClick={handleOpen}
