@@ -61,7 +61,10 @@ const StudentLoginPage = () => {
 					});
 					router.push(`/student/${data?.regNo}`);
 				} else {
-					router.push('/student/register');
+					router.push({
+						pathname: '/student/register',
+						query: { progress: 'newStudent' },
+					});
 				}
 			} catch (error) {
 				if (error instanceof AxiosError) {
