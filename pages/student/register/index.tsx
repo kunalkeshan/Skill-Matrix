@@ -17,6 +17,8 @@ import { AppRegEx } from '@/config';
 import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
+import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -108,6 +110,14 @@ const StudentRegisterPage = () => {
 		handleGoogleRedirectAuth();
 	}, []);
 
+	useEffect(() => {
+		if (router.query.progress?.includes('newStudent')) {
+			toast('You need to create an account to access Skill Matrix!', {
+				position: 'bottom-right',
+			});
+		}
+	}, [router.events]);
+
 	return (
 		<>
 			<Head>
@@ -134,9 +144,9 @@ const StudentRegisterPage = () => {
 						</p>
 						<button
 							onClick={handleAuth}
-							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-105'
+							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-100'
 						>
-							<div className='w-16 h-16'>
+							<div className='w-12 h-12'>
 								<Image
 									src='/assets/svgs/google-icon.svg'
 									width={100}
@@ -159,6 +169,12 @@ const StudentRegisterPage = () => {
 								{error.message}
 							</p>
 						)}
+						<Link
+							href={'/student/login'}
+							className='w-full text-center text-primary transition-all duration-300 hover:underline'
+						>
+							Already have an account? Login here.
+						</Link>
 					</div>
 				</section>
 			</PublicLayout>

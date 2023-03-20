@@ -20,10 +20,10 @@ const Intro = () => {
 							Calculate Now
 						</Link>
 						<Link
-							href={'/#features'}
+							href={'/leaderboard'}
 							className='btn !bg-gray-300 hover:!bg-gray-400 !text-neutral'
 						>
-							Explore
+							Leaderboard
 						</Link>
 					</div>
 				</div>
@@ -40,8 +40,8 @@ const Intro = () => {
 				</div>
 			</div>
 			<div className='-z-10 w-full md:w-1/2 bg-primary h-full md:top-0 right-0 absolute -bottom-[55%]' />
-			<div className='w-80 h-80 rounded-full bg-secondary2 absolute -z-10 -left-10 -top-16 animate-float' />
-			<div className='w-80 h-80 bg-secondary3 hidden md:block absolute -z-10 -left-10 bottom-20 rotate-45' />
+			{/* <div className='w-80 h-80 rounded-full bg-secondary2 absolute -z-10 -left-10 -top-16 animate-float' />
+			<div className='w-80 h-80 bg-secondary3 hidden md:block absolute -z-10 -left-10 bottom-20 rotate-45' /> */}
 		</section>
 	);
 };

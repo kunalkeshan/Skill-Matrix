@@ -37,7 +37,7 @@ const Navbar = () => {
 					{NAV_LINKS.map((link, index) => (
 						<li
 							key={index}
-							className='text-lg transition-all duration-300 hover:text-secondary3 font-bold'
+							className='text-lg transition-all duration-300 hover:text-secondary3'
 						>
 							<Link href={link.url}>{link.name}</Link>
 						</li>
@@ -77,7 +77,7 @@ const Navbar = () => {
 						{NAV_LINKS.map((link, index) => (
 							<li
 								key={index}
-								className='text-3xl transition-all duration-300 hover:text-secondary3 font-bold'
+								className='text-3xl transition-all duration-300 hover:text-secondary3 font-medium'
 							>
 								<Link href={link.url} onClick={handleClose}>
 									{link.name}

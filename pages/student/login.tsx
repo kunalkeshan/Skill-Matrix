@@ -17,6 +17,7 @@ import { showLoading } from '@/store/features/app';
 import { useRouter } from 'next/router';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -60,7 +61,10 @@ const StudentLoginPage = () => {
 					});
 					router.push(`/student/${data?.regNo}`);
 				} else {
-					router.push('/student/register');
+					router.push({
+						pathname: '/student/register',
+						query: { progress: 'newStudent' },
+					});
 				}
 			} catch (error) {
 				if (error instanceof AxiosError) {
@@ -114,9 +118,9 @@ const StudentLoginPage = () => {
 						</p>
 						<button
 							onClick={handleAuth}
-							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-105'
+							className='flex w-full items-center gap-8 justify-center px-7 py-3 bg-secondary1 rounded-5xl transition-all duration-300 hover:scale-95 active:scale-100'
 						>
-							<div className='w-16 h-16'>
+							<div className='w-12 h-12'>
 								<Image
 									src='/assets/svgs/google-icon.svg'
 									width={100}
@@ -139,6 +143,12 @@ const StudentLoginPage = () => {
 								{error.message}
 							</p>
 						)}
+						<Link
+							href={'/student/register'}
+							className='w-full text-center text-primary transition-all duration-300 hover:underline'
+						>
+							Don't have an account? Register here.
+						</Link>
 					</div>
 				</section>
 			</PublicLayout>

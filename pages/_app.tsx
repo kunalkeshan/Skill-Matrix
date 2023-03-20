@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import wrapper from '@/store/store';
 import Backdrop from '@/components/reusable/Backdrop';
 import { Newsreader, Kumbh_Sans } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 
 const newsreader = Newsreader({
 	style: ['italic', 'normal'],
@@ -27,6 +28,7 @@ export default function App({ Component, ...rest }: AppProps) {
 			<main className={`${newsreader.variable} ${kumbhSans.variable}`}>
 				<Component {...pageProps} />
 				<Backdrop />
+				<Toaster />
 			</main>
 		</Provider>
 	);
