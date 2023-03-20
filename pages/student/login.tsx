@@ -17,6 +17,7 @@ import { showLoading } from '@/store/features/app';
 import { useRouter } from 'next/router';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -139,6 +140,12 @@ const StudentLoginPage = () => {
 								{error.message}
 							</p>
 						)}
+						<Link
+							href={'/student/register'}
+							className='w-full text-center text-primary transition-all duration-300 hover:underline'
+						>
+							Don't have an account? Register here.
+						</Link>
 					</div>
 				</section>
 			</PublicLayout>

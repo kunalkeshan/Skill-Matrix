@@ -17,6 +17,7 @@ import { AppRegEx } from '@/config';
 import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -159,6 +160,12 @@ const StudentRegisterPage = () => {
 								{error.message}
 							</p>
 						)}
+						<Link
+							href={'/student/login'}
+							className='w-full text-center text-primary transition-all duration-300 hover:underline'
+						>
+							Already have an account? Login here.
+						</Link>
 					</div>
 				</section>
 			</PublicLayout>
