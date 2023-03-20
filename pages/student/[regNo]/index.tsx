@@ -1,6 +1,13 @@
 import { app, db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	where,
+} from 'firebase/firestore';
 import React from 'react';
 import {
 	InferGetServerSidePropsType,
@@ -39,22 +46,41 @@ export default StudentProfilePage;
 export const getServerSideProps = withSessionSsr(
 	async function getServerSideProps({
 		req,
-	}): Promise<GetServerSidePropsResult<{ student: Student }>> {
+		params,
+	}): Promise<
+		GetServerSidePropsResult<{ student: Student; isCurrentUser: boolean }>
+	> {
 		const user = req.session.user;
-		if (user?.email) {
-			const docRef = doc(db, 'students', user.email!);
-			const docSnap = await getDoc(docRef);
-			const data = docSnap.data() as Student;
+		const { regNo } = params!;
+		if (!regNo) {
 			return {
-				props: {
-					student: data,
-				},
+				notFound: true,
 			};
 		}
+
+		const studentsRef = collection(db, 'students');
+		const q = query(studentsRef, where('regNo', '==', regNo));
+
+		const querySnapshot = await getDocs(q);
+		if (querySnapshot.empty) {
+			return {
+				notFound: true,
+			};
+		}
+
+		const student = querySnapshot.docs
+			.find((doc) => doc.data().regNo === regNo)
+			?.data() as Student;
+		if (!student) {
+			return {
+				notFound: true,
+			};
+		}
+
 		return {
-			redirect: {
-				destination: '/student/login',
-				permanent: true,
+			props: {
+				student,
+				isCurrentUser: student.email === user?.email,
 			},
 		};
 	}
