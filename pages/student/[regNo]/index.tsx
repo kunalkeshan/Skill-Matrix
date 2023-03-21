@@ -24,10 +24,10 @@ const StudentProfilePage: NextPage<
 				<title>{student.name}</title>
 			</Head>
 			<PublicLayout>
-				<section className='w-full min-h-screen'>
-					<header className='w-full min-h-[320px] bg-secondary1 relative'>
-						<div className='max-w-5xl bg-white rounded-3xl px-10 py-8 grid grid-cols-1 md:grid-cols-2 gap-8 absolute -translate-x-1/2 -translate-y-1/2 top-full left-1/2'>
-							<div className='max-w-[12rem] rounded-full overflow-hidden mx-auto w-full'>
+				<section className='w-full min-h-screen flex flex-col'>
+					<header className='w-full min-h-[320px] bg-secondary1 relative px-10'>
+						<div className='max-w-5xl bg-white rounded-3xl px-10 py-8 grid grid-cols-1 sm:grid-cols-2 gap-8 absolute -translate-x-1/2 -translate-y-1/2 top-full left-1/2 w-[80%]'>
+							<div className='max-w-[8rem] md:max-w-[12rem] rounded-full overflow-hidden mx-auto w-full'>
 								<Image
 									src={student.avatar}
 									width={100}
@@ -44,6 +44,19 @@ const StudentProfilePage: NextPage<
 							</div>
 						</div>
 					</header>
+					<main className='max-w-2xl lg:max-w-4xl w-full mx-auto mt-52 px-10'>
+						<h2 className='font-primary text-primary text-xl font-semibold md:text-3xl'>
+							About
+						</h2>
+						<input
+							disabled
+							defaultValue={
+								student?.about ||
+								"Uh oh! ☕ There's nothing to see here."
+							}
+							className='w-full'
+						/>
+					</main>
 				</section>
 			</PublicLayout>
 		</>
