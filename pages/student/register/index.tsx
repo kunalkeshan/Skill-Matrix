@@ -19,6 +19,7 @@ import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import { loginStudent } from '@/store/features/student';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -53,12 +54,13 @@ const StudentRegisterPage = () => {
 				const user = result.user;
 				const docRef = doc(db, 'students', user.email!);
 				const docSnap = await getDoc(docRef);
-				const data = docSnap.data();
+				const data = docSnap.data() as Student;
 				if (docSnap.exists() && data?.regNo !== null) {
 					await axios.post<AxiosBaseResponse>('/api/student/login', {
 						email: user.email,
 						token,
 					});
+					dispatch(loginStudent(data));
 					router.push(`/student/${data?.regNo}`);
 				} else {
 					if (!AppRegEx.studentCollegeEmail.test(user.email!)) {
@@ -80,6 +82,7 @@ const StudentRegisterPage = () => {
 							email: user.email,
 							phone: user.phoneNumber,
 							name: user.displayName,
+							avatar: user.photoURL,
 						},
 					});
 				}

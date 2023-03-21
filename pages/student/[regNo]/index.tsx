@@ -1,36 +1,65 @@
-import { app, db } from '@/firebase';
+import { db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import React from 'react';
 import {
 	InferGetServerSidePropsType,
 	NextPage,
 	GetServerSidePropsResult,
 } from 'next';
-import { getAuth, signOut } from 'firebase/auth';
-import { useRouter } from 'next/router';
-import {} from 'iron-session';
-import axios from 'axios';
-
-const auth = getAuth(app);
+import Head from 'next/head';
+import PublicLayout from '@/layouts/PublicLayout';
+import Image from 'next/image';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const StudentProfilePage: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ student }) => {
-	const router = useRouter();
 	return (
-		<div>
-			{student.name}
-			<button
-				onClick={async () => {
-					signOut(auth);
-					await axios.post('/api/student/logout');
-					router.push('/student/login');
-				}}
-			>
-				Sign Out
-			</button>
-		</div>
+		<>
+			<Head>
+				<title>{student.name}</title>
+			</Head>
+			<PublicLayout>
+				<section className='w-full min-h-screen flex flex-col'>
+					<header className='w-full min-h-[320px] bg-secondary1 relative px-10'>
+						<div className='max-w-5xl bg-white rounded-3xl px-10 py-8 grid grid-cols-1 sm:grid-cols-2 gap-8 absolute -translate-x-1/2 -translate-y-1/2 top-full left-1/2 w-[80%]'>
+							<div className='max-w-[8rem] md:max-w-[12rem] rounded-full overflow-hidden mx-auto w-full'>
+								<Image
+									src={student.avatar}
+									width={100}
+									height={100}
+									alt='Skill-Matrix'
+									className='w-full h-auto object-contain'
+								/>
+							</div>
+							<div>
+								<h1 className='font-primary text-primary text-xl md:text-3xl font-semibold'>
+									{student.name}
+								</h1>
+								<ul></ul>
+							</div>
+						</div>
+					</header>
+					<main className='max-w-2xl lg:max-w-4xl w-full mx-auto mt-52 px-10'>
+						<h2 className='font-primary text-primary text-xl font-semibold md:text-3xl'>
+							About
+						</h2>
+						<input
+							disabled
+							defaultValue={
+								student?.about ||
+								"Uh oh! ☕ There's nothing to see here."
+							}
+							className='w-full'
+						/>
+					</main>
+				</section>
+			</PublicLayout>
+		</>
 	);
 };
 
@@ -39,22 +68,41 @@ export default StudentProfilePage;
 export const getServerSideProps = withSessionSsr(
 	async function getServerSideProps({
 		req,
-	}): Promise<GetServerSidePropsResult<{ student: Student }>> {
+		params,
+	}): Promise<
+		GetServerSidePropsResult<{ student: Student; isCurrentUser: boolean }>
+	> {
 		const user = req.session.user;
-		if (user?.email) {
-			const docRef = doc(db, 'students', user.email!);
-			const docSnap = await getDoc(docRef);
-			const data = docSnap.data() as Student;
+		const { regNo } = params!;
+		if (!regNo) {
 			return {
-				props: {
-					student: data,
-				},
+				notFound: true,
 			};
 		}
+
+		const studentsRef = collection(db, 'students');
+		const q = query(studentsRef, where('regNo', '==', regNo));
+
+		const querySnapshot = await getDocs(q);
+		if (querySnapshot.empty) {
+			return {
+				notFound: true,
+			};
+		}
+
+		const student = querySnapshot.docs
+			.find((doc) => doc.data().regNo === regNo)
+			?.data() as Student;
+		if (!student) {
+			return {
+				notFound: true,
+			};
+		}
+
 		return {
-			redirect: {
-				destination: '/student/login',
-				permanent: true,
+			props: {
+				student,
+				isCurrentUser: student.email === user?.email,
 			},
 		};
 	}

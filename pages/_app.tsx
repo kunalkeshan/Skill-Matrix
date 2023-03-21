@@ -20,11 +20,14 @@ const kumbhSans = Kumbh_Sans({
 	variable: '--font-kumbh-sans',
 });
 
-export default function App({ Component, ...rest }: AppProps) {
-	const { store, props } = wrapper.useWrappedStore(rest);
+type CustomAppProps = AppProps;
+
+const App = ({ Component, ...rest }: CustomAppProps) => {
+	const { store: appStore, props } = wrapper.useWrappedStore(rest);
 	const { pageProps } = props;
+
 	return (
-		<Provider store={store}>
+		<Provider store={appStore}>
 			<main className={`${newsreader.variable} ${kumbhSans.variable}`}>
 				<Component {...pageProps} />
 				<Backdrop />
@@ -32,4 +35,6 @@ export default function App({ Component, ...rest }: AppProps) {
 			</main>
 		</Provider>
 	);
-}
+};
+
+export default App;

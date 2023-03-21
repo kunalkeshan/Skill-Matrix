@@ -24,3 +24,14 @@ export const NAV_LINKS = [
 		url: '/student/login',
 	},
 ];
+
+export const AUTH_NAV_LINKS = [
+	{
+		name: 'Leaderboard',
+		url: '/leaderboard',
+	},
+	{
+		name: 'Contact',
+		url: '/contact',
+	},
+];
