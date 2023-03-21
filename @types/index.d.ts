@@ -8,10 +8,10 @@ interface Student {
 	about?: string;
 	campus?: string;
 	socials?: {
-		resume: string;
-		instagram: string;
-		linkedin: string;
-		github: string;
+		resume?: string;
+		instagram?: string;
+		linkedin?: string;
+		github?: string;
 	};
 }
 

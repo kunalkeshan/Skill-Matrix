@@ -12,8 +12,8 @@ import { showLoading } from '@/store/features/app';
 import axios, { AxiosError } from 'axios';
 import { getAuth, GoogleAuthProvider, signOut } from 'firebase/auth';
 import PublicLayout from '@/layouts/PublicLayout';
+import { loginStudent } from '@/store/features/student';
 
-const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
 
 const studentOnboardSchema = Yup.object().shape({
@@ -38,10 +38,13 @@ const StudentRegistrationOnboardPage = () => {
 	const handleStudentOnboard = async (values: StudentOnboardValues) => {
 		try {
 			dispatch(showLoading(true));
-			await axios.post<AxiosBaseResponse>('/api/student/register', {
+			const data = {
 				...values,
 				email: router.query.email,
-			});
+				avatar: router.query.avatar,
+			};
+			await axios.post<AxiosBaseResponse>('/api/student/register', data);
+			dispatch(loginStudent(data as Student));
 			router.push(`/student/${values.regNo}`);
 		} catch (error) {
 			if (error instanceof AxiosError) {

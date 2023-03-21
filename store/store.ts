@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import { appSlice } from './features/app';
+import { studentSlice } from './features/student';
 
 const makeStore = () =>
 	configureStore({
 		reducer: {
 			[appSlice.name]: appSlice.reducer,
+			[studentSlice.name]: studentSlice.reducer,
 		},
 	});
 

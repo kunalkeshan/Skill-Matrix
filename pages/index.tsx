@@ -3,10 +3,16 @@ import Contact from '@/components/landing/Contact';
 import FAQ from '@/components/landing/FAQ';
 import Features from '@/components/landing/Features';
 import Intro from '@/components/landing/Intro';
+import { useAppSelector } from '@/hooks/hooks';
+import useFirebaseAuth from '@/hooks/useFirebaseAuth';
 import PublicLayout from '@/layouts/PublicLayout';
 import Head from 'next/head';
 
 export default function Home() {
+	const { student } = useFirebaseAuth({});
+
+	console.log(student);
+
 	return (
 		<>
 			<Head>

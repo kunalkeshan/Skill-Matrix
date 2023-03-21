@@ -7,7 +7,6 @@ import {
 	NextPage,
 	GetServerSidePropsResult,
 } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
@@ -19,8 +18,6 @@ import ArticleIcon from '@mui/icons-material/Article';
 const StudentProfilePage: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ student }) => {
-	const router = useRouter();
-
 	return (
 		<>
 			<Head>

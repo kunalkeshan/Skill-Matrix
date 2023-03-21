@@ -10,6 +10,9 @@ import { useRouter } from 'next/router';
 import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
 import { app } from '@/firebase';
+import { useAppDispatch } from '@/hooks/hooks';
+import { logoutStudent } from '@/store/features/student';
+import useFirebaseAuth from '@/hooks/useFirebaseAuth';
 
 const auth = getAuth(app);
 
@@ -22,13 +25,11 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction='up' ref={ref} {...props} />;
 });
 
-interface NavProps {
-	student?: Student;
-}
-
-const Navbar: React.FC<NavProps> = ({ student }) => {
+const Navbar = () => {
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 	const [open, setOpen] = useState(false);
+	const { student } = useFirebaseAuth({});
 	const handleOpen = () => {
 		setOpen(true);
 	};
@@ -38,6 +39,7 @@ const Navbar: React.FC<NavProps> = ({ student }) => {
 	const handleLogout = async () => {
 		signOut(auth);
 		await axios.post('/api/student/logout');
+		dispatch(logoutStudent());
 		router.push('/student/login');
 	};
 	return (
@@ -49,7 +51,7 @@ const Navbar: React.FC<NavProps> = ({ student }) => {
 				>
 					<CloudQueueIcon /> <p>Skill-Matrix</p>
 				</Link>
-				<ul className='md:flex gap-8 hidden'>
+				<ul className='md:flex gap-8 hidden items-center'>
 					{!student ? (
 						NAV_LINKS.map((link, index) => (
 							<li
@@ -61,7 +63,11 @@ const Navbar: React.FC<NavProps> = ({ student }) => {
 						))
 					) : (
 						<>
-							<li></li>
+							<li className='text-lg transition-all duration-300 hover:text-secondary3'>
+								<Link href={`/student/${student.regNo}`}>
+									My Profile
+								</Link>
+							</li>
 							{AUTH_NAV_LINKS.map((link, index) => (
 								<li
 									key={index}
@@ -70,7 +76,7 @@ const Navbar: React.FC<NavProps> = ({ student }) => {
 									<Link href={link.url}>{link.name}</Link>
 								</li>
 							))}
-							<li>
+							<li className='text-sm transition-all duration-300 hover:text-secondary3'>
 								<button onClick={handleLogout}>Sign Out</button>
 							</li>
 						</>
