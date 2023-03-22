@@ -61,7 +61,7 @@ const StudentRegistrationOnboardPage = () => {
 				return;
 			}
 			await axios.post<AxiosBaseResponse>('/api/student/register', data);
-			dispatch(loginStudent(data as Student));
+			dispatch(loginStudent({ ...data, about: '' } as Student));
 			router.push(`/student/${values.regNo}`);
 		} catch (error) {
 			if (error instanceof AxiosError) {

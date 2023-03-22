@@ -4,6 +4,7 @@ import { z } from 'zod';
 import ApiError from '@/utils/apiError';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { setCookie } from 'cookies-next';
 
 export default withSessionRoute(
 	async (req: NextApiRequest, res: NextApiResponse) => {
@@ -43,6 +44,7 @@ async function registerRoute(
 		});
 		req.session = { ...req.session, user: { email: email } };
 		await req.session.save();
+		setCookie('skill-matrix-student-reg-no', regNo, { req, res });
 		return res
 			.status(201)
 			.json({ message: 'student/registration-successful' });

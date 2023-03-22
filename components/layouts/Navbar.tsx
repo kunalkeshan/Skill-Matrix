@@ -113,16 +113,39 @@ const Navbar = () => {
 						</button>
 					</div>
 					<ul className='flex flex-col gap-4 max-w-5xl mt-8'>
-						{NAV_LINKS.map((link, index) => (
-							<li
-								key={index}
-								className='text-3xl transition-all duration-300 hover:text-secondary3 font-medium'
-							>
-								<Link href={link.url} onClick={handleClose}>
-									{link.name}
-								</Link>
-							</li>
-						))}
+						{!student ? (
+							NAV_LINKS.map((link, index) => (
+								<li
+									key={index}
+									className='text-3xl transition-all duration-300 hover:text-secondary3 font-medium'
+								>
+									<Link href={link.url} onClick={handleClose}>
+										{link.name}
+									</Link>
+								</li>
+							))
+						) : (
+							<>
+								<li className='text-lg transition-all duration-300 hover:text-secondary3'>
+									<Link href={`/student/${student.regNo}`}>
+										My Profile
+									</Link>
+								</li>
+								{AUTH_NAV_LINKS.map((link, index) => (
+									<li
+										key={index}
+										className='text-lg transition-all duration-300 hover:text-secondary3'
+									>
+										<Link href={link.url}>{link.name}</Link>
+									</li>
+								))}
+								<li className='text-sm transition-all duration-300 hover:text-secondary3'>
+									<button onClick={handleLogout}>
+										Sign Out
+									</button>
+								</li>
+							</>
+						)}
 					</ul>
 				</div>
 			</Dialog>

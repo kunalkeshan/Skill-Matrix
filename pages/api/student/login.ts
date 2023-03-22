@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 import ApiError from '@/utils/apiError';
 import { AppRegEx } from '@/config';
+import { setCookie } from 'cookies-next';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/firebase';
 
 export default withSessionRoute(
 	async (req: NextApiRequest, res: NextApiResponse) => {
@@ -32,8 +35,11 @@ async function loginRoute(req: LoginStudentApiRequest, res: NextApiResponse) {
 				statusCode: 400,
 				message: 'student/invalid-email-type',
 			});
+		const studentRef = doc(db, 'students', email);
+		const student = (await getDoc(studentRef)).data() as Student;
 		req.session = { ...req.session, user: { email: email } };
 		await req.session.save();
+		setCookie('skill-matrix-student-reg-no', student.regNo, { req, res });
 		return res.status(200).json({ message: 'student/login-successful' });
 	} catch (error) {
 		console.log(error);
