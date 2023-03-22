@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { deleteCookie } from 'cookies-next';
 import { HYDRATE } from 'next-redux-wrapper';
 
 interface StudentState {
@@ -6,7 +7,10 @@ interface StudentState {
 }
 
 const initialState: StudentState = {
-	student: null,
+	student:
+		typeof window !== 'undefined'
+			? JSON.parse(localStorage.getItem('skill-matrix-student')!)
+			: null,
 };
 
 export const studentSlice = createSlice({
@@ -14,10 +18,17 @@ export const studentSlice = createSlice({
 	initialState,
 	reducers: {
 		loginStudent: (state, action: PayloadAction<Student>) => {
-			state.student = action.payload;
+			const student = action.payload;
+			state.student = student;
+			localStorage.setItem(
+				'skill-matrix-student',
+				JSON.stringify(student)
+			);
 		},
 		logoutStudent: (state) => {
 			state.student = null;
+			deleteCookie('skill-matrix-student-reg-no');
+			localStorage.removeItem('skill-matrix-student');
 		},
 	},
 	extraReducers: {

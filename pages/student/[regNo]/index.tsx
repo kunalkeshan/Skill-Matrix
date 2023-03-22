@@ -1,7 +1,15 @@
 import { db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import React from 'react';
+import {
+	collection,
+	doc,
+	getDocs,
+	onSnapshot,
+	query,
+	updateDoc,
+	where,
+} from 'firebase/firestore';
+import React, { useEffect, useRef, useState } from 'react';
 import {
 	InferGetServerSidePropsType,
 	NextPage,
@@ -14,10 +22,87 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import ArticleIcon from '@mui/icons-material/Article';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { loginStudent } from '@/store/features/student';
+import { toast } from 'react-hot-toast';
 
 const StudentProfilePage: NextPage<
 	InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ student }) => {
+> = ({ student: pageStudent, isCurrentUser }) => {
+	const [student, setStudent] = useState(pageStudent);
+	const dispatch = useAppDispatch();
+	const { student: stateStudent } = useAppSelector((state) => state.student);
+	const [input, setInput] = useState({
+		about: student.about,
+	});
+	const [edit, setEdit] = useState({
+		about: false,
+	});
+	const inputRef = { about: useRef<HTMLInputElement | null>(null) };
+
+	type Inputs = 'about';
+
+	const handleInput =
+		(prop: Inputs) => (e: React.ChangeEvent<HTMLInputElement>) => {
+			setInput((prev) => {
+				return { ...prev, [prop]: e.target.value };
+			});
+		};
+
+	const handleDisabled =
+		(prop: Inputs) => (e: React.MouseEvent<HTMLButtonElement>) => {
+			setEdit((prev) => {
+				const nextState = !edit[prop];
+				if (nextState) {
+					console.log(inputRef[prop].current);
+					inputRef[prop].current?.focus();
+				} else if (!nextState && input[prop]?.length === 0) {
+					setInput({ ...input, [prop]: student[prop] });
+				} else if (!nextState && stateStudent![prop] !== input[prop]) {
+					setInput({ ...input, [prop]: stateStudent![prop] });
+				}
+				return {
+					...prev,
+					[prop]: nextState,
+				};
+			});
+		};
+
+	const handleInputSave = (prop: Inputs) => async () => {
+		try {
+			if (input[prop]?.length !== 0) {
+				const studentRef = doc(db, 'students', student.email);
+				await updateDoc(studentRef, {
+					[prop]: input[prop],
+				});
+				setEdit({ ...edit, [prop]: false });
+				setInput({ ...input, [prop]: input[prop] });
+				dispatch(loginStudent({ ...student, [prop]: input[prop] }));
+				return;
+			}
+			toast.error(`${prop} cannot be empty!`, {
+				position: 'bottom-right',
+			});
+		} catch (error) {
+			toast.error(
+				`Unable to update ${prop} at the moment. Try again later.`
+			);
+		}
+	};
+
+	useEffect(() => {
+		const studentsRef = collection(db, 'students');
+		const q = query(studentsRef, where('regNo', '==', student.regNo));
+		onSnapshot(q, (querySnapshot) => {
+			querySnapshot.docChanges().forEach((change) => {
+				if (change.type === 'modified') {
+					const data = change.doc.data() as Student;
+					setStudent(data);
+				}
+			});
+		});
+	}, []);
+
 	return (
 		<>
 			<Head>
@@ -48,14 +133,46 @@ const StudentProfilePage: NextPage<
 						<h2 className='font-primary text-primary text-xl font-semibold md:text-3xl'>
 							About
 						</h2>
+
 						<input
-							disabled
-							defaultValue={
-								student?.about ||
-								"Uh oh! ☕ There's nothing to see here."
-							}
-							className='w-full'
+							value={input.about}
+							onChange={handleInput('about')}
+							disabled={!edit.about}
+							ref={inputRef.about}
+							className={`${
+								edit.about
+									? 'bg-white border border-primary shadow-sm'
+									: 'border-transparent'
+							} w-full text-neutral outline-none rounded-3xl text-lg mt-4 bg-inherit px-4 py-2 transition-all duration-300`}
 						/>
+						{student?.about?.length === 0 && (
+							<p className='w-full text-neutral text-lg mt-4 bg-inherit px-4 py-2'>
+								Uh oh! ☕ There's nothing to see here.
+								{isCurrentUser &&
+									' Click on edit to get started!'}
+							</p>
+						)}
+						{isCurrentUser && (
+							<div className='flex gap-8 w-fit mt-8 px-4'>
+								<button
+									onClick={handleDisabled('about')}
+									className={`rounded-5xl px-4 py-2 uppercase font-semibold bg-primary text-white`}
+								>
+									{!edit.about ? 'Edit' : 'Cancel'}
+								</button>
+								<button
+									onClick={handleInputSave('about')}
+									className={`${
+										student?.about !== input.about
+											? 'text-primary text-opacity-100 cursor-pointer'
+											: 'text-opacity-50 cursor-default'
+									} font-semibold uppercase transition-all duration-300`}
+									disabled={student?.about === input.about}
+								>
+									Save
+								</button>
+							</div>
+						)}
 					</main>
 				</section>
 			</PublicLayout>
@@ -66,11 +183,11 @@ const StudentProfilePage: NextPage<
 export default StudentProfilePage;
 
 export const getServerSideProps = withSessionSsr(
-	async function getServerSideProps({
-		req,
-		params,
-	}): Promise<
-		GetServerSidePropsResult<{ student: Student; isCurrentUser: boolean }>
+	async function getServerSideProps({ req, params }): Promise<
+		GetServerSidePropsResult<{
+			student: Student;
+			isCurrentUser: boolean;
+		}>
 	> {
 		const user = req.session.user;
 		const { regNo } = params!;
@@ -93,11 +210,6 @@ export const getServerSideProps = withSessionSsr(
 		const student = querySnapshot.docs
 			.find((doc) => doc.data().regNo === regNo)
 			?.data() as Student;
-		if (!student) {
-			return {
-				notFound: true,
-			};
-		}
 
 		return {
 			props: {
