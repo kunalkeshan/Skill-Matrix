@@ -34,20 +34,24 @@ const StudentProfilePage: NextPage<
 	const { student: stateStudent } = useAppSelector((state) => state.student);
 	const [input, setInput] = useState({
 		about: student.about,
+		skills: student?.skills,
 	});
 	const [edit, setEdit] = useState({
 		about: false,
+		skills: false,
 	});
-	const inputRef = { about: useRef<HTMLInputElement | null>(null) };
+	const inputRef = {
+		about: useRef<HTMLInputElement | null>(null),
+		skills: useRef<HTMLTextAreaElement | null>(null),
+	};
 
-	type Inputs = 'about';
+	type Inputs = 'about' | 'skills';
 
-	const handleInput =
-		(prop: Inputs) => (e: React.ChangeEvent<HTMLInputElement>) => {
-			setInput((prev) => {
-				return { ...prev, [prop]: e.target.value };
-			});
-		};
+	const handleInput = (prop: Inputs, value: string | string[]) => {
+		setInput((prev) => {
+			return { ...prev, [prop]: value };
+		});
+	};
 
 	const handleDisabled =
 		(prop: Inputs) => (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -133,17 +137,18 @@ const StudentProfilePage: NextPage<
 						<h2 className='font-primary text-primary text-xl font-semibold md:text-3xl'>
 							About
 						</h2>
-
 						<input
 							value={input.about}
-							onChange={handleInput('about')}
+							onChange={(e) =>
+								handleInput('about', e.target.value)
+							}
 							disabled={!edit.about}
 							ref={inputRef.about}
 							className={`${
 								edit.about
 									? 'bg-white border border-primary shadow-sm'
 									: 'border-transparent'
-							} w-full text-neutral outline-none rounded-3xl text-lg mt-4 bg-inherit px-4 py-2 transition-all duration-300`}
+							} w-full text-neutral outline-none rounded-md text-lg mt-4 bg-inherit px-4 py-2 transition-all duration-300`}
 						/>
 						{student?.about?.length === 0 && (
 							<p className='w-full text-neutral text-lg mt-4 bg-inherit px-4 py-2'>
@@ -168,6 +173,73 @@ const StudentProfilePage: NextPage<
 											: 'text-opacity-50 cursor-default'
 									} font-semibold uppercase transition-all duration-300`}
 									disabled={student?.about === input.about}
+								>
+									Save
+								</button>
+							</div>
+						)}
+						<h2 className='font-primary text-primary text-xl font-semibold md:text-3xl mt-12'>
+							Skills
+						</h2>
+						<ul className='w-full flex gap-4 mt-4'>
+							{student?.skills?.length! > 0 &&
+							student?.skills![0].length !== 0 ? (
+								student.skills?.map((skill, index) => (
+									<li
+										key={index}
+										className='px-4 py-2 text-sm bg-secondary1 bg-opacity-80 transition-all duration-300 hover:bg-opacity-100 font-semibold cursor-default hover:shadow-sm hover:-translate-y-1 lowercase rounded-3xl'
+									>
+										{skill}
+									</li>
+								))
+							) : (
+								<li className='w-full text-neutral text-lg mt-4 bg-inherit px-4 py-2'>
+									Uh oh! ☕ There's nothing to see here.
+									{isCurrentUser &&
+										' Click on edit to get started!'}
+								</li>
+							)}
+						</ul>
+						{isCurrentUser && edit.skills && (
+							<>
+								<p className='mt-4 text-xs md:text-sm'>
+									Enter each skill with ",", eg: typescript,
+									python, tensorflow, ....
+								</p>
+								<textarea
+									value={input.skills?.join(',')}
+									onChange={(e) => {
+										handleInput(
+											'skills',
+											e.target.value.split(',')
+										);
+									}}
+									disabled={!edit.skills}
+									ref={inputRef.skills}
+									className={`${
+										edit.skills
+											? 'bg-white border border-primary shadow-sm'
+											: 'border-transparent'
+									} w-full resize-y min-h-fit text-neutral outline-none rounded-md mt-1 text-lg bg-inherit px-4 py-2 transition-all duration-300`}
+								/>
+							</>
+						)}
+						{isCurrentUser && (
+							<div className='flex gap-8 w-fit mt-8 px-4'>
+								<button
+									onClick={handleDisabled('skills')}
+									className={`rounded-5xl px-4 py-2 uppercase font-semibold bg-primary text-white`}
+								>
+									{!edit.skills ? 'Edit' : 'Cancel'}
+								</button>
+								<button
+									onClick={handleInputSave('skills')}
+									className={`${
+										student?.skills !== input.skills
+											? 'text-primary text-opacity-100 cursor-pointer'
+											: 'text-opacity-50 cursor-default'
+									} font-semibold uppercase transition-all duration-300`}
+									disabled={student?.skills === input.skills}
 								>
 									Save
 								</button>
