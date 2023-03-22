@@ -32,7 +32,7 @@ async function loginRoute(req: LoginStudentApiRequest, res: NextApiResponse) {
 				statusCode: 400,
 				message: 'student/invalid-email-type',
 			});
-		req.session = { ...req.session, user: { email } };
+		req.session = { ...req.session, user: { email: email } };
 		await req.session.save();
 		return res.status(200).json({ message: 'student/login-successful' });
 	} catch (error) {

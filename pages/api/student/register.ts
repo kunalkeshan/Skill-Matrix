@@ -41,7 +41,7 @@ async function registerRoute(
 			name,
 			regNo,
 		});
-		req.session = { ...req.session, user: { email } };
+		req.session = { ...req.session, user: { email: email } };
 		await req.session.save();
 		return res
 			.status(201)
