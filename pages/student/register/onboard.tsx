@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { app, db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
 import { doc, getDoc } from 'firebase/firestore';
@@ -13,6 +13,7 @@ import axios, { AxiosError } from 'axios';
 import { getAuth, GoogleAuthProvider, signOut } from 'firebase/auth';
 import PublicLayout from '@/layouts/PublicLayout';
 import { loginStudent } from '@/store/features/student';
+import { toast } from 'react-hot-toast';
 
 const auth = getAuth(app);
 
@@ -60,6 +61,14 @@ const StudentRegistrationOnboardPage = () => {
 			dispatch(showLoading(false));
 		}
 	};
+
+	useEffect(() => {
+		if (router.query.progress?.includes('newStudent')) {
+			toast('You need to create an account to access Skill Matrix!', {
+				position: 'bottom-right',
+			});
+		}
+	}, [router.events]);
 
 	return (
 		<>
