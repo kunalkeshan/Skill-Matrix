@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { getAuth, signOut } from 'firebase/auth';
 import axios from 'axios';
 import { app } from '@/firebase';
-import { useAppDispatch } from '@/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { logoutStudent } from '@/store/features/student';
 import useFirebaseAuth from '@/hooks/useFirebaseAuth';
 
@@ -29,7 +29,8 @@ const Navbar = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const [open, setOpen] = useState(false);
-	const { student } = useFirebaseAuth({});
+	// const { student } = useFirebaseAuth({});
+	const { student } = useAppSelector((state) => state.student);
 	const handleOpen = () => {
 		setOpen(true);
 	};
