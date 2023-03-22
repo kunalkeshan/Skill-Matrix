@@ -43,7 +43,7 @@ const Navbar = () => {
 		router.push('/student/login');
 	};
 	return (
-		<nav className='w-full bg-white text-primary px-6 md:py-7 py-3 z-50 shadow-lg'>
+		<nav className='w-full bg-white text-primary px-6 md:py-5 py-3 z-50 shadow-lg'>
 			<div className='mx-auto max-w-7xl flex items-center justify-between z-50'>
 				<Link
 					href='/'

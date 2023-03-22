@@ -27,7 +27,7 @@
 	}
 
 	.input {
-		@apply w-full mt-4 py-4 px-6 border border-neutral transition-all duration-300 focus:border-primary outline-none rounded-2xl;
+		@apply mt-2 py-1.5 px-2 border border-neutral transition-all duration-300 focus:border-primary outline-none rounded-md;
 	}
 
 	.input-error {
