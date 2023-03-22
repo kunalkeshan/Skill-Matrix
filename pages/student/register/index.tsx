@@ -18,7 +18,6 @@ import Head from 'next/head';
 import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
 import Link from 'next/link';
-import { toast } from 'react-hot-toast';
 import { loginStudent } from '@/store/features/student';
 
 const provider = new GoogleAuthProvider();
@@ -112,14 +111,6 @@ const StudentRegisterPage = () => {
 
 		handleGoogleRedirectAuth();
 	}, []);
-
-	useEffect(() => {
-		if (router.query.progress?.includes('newStudent')) {
-			toast('You need to create an account to access Skill Matrix!', {
-				position: 'bottom-right',
-			});
-		}
-	}, [router.events]);
 
 	return (
 		<>

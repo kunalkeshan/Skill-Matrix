@@ -10,7 +10,7 @@ import { app } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
 import axios, { AxiosError } from 'axios';
 import Head from 'next/head';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { useAppDispatch } from '@/hooks/hooks';
 import { showLoading } from '@/store/features/app';
@@ -19,6 +19,7 @@ import PublicLayout from '@/layouts/PublicLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import { loginStudent } from '@/store/features/student';
+import { AppRegEx } from '@/config';
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -63,9 +64,28 @@ const StudentLoginPage = () => {
 					dispatch(loginStudent(data));
 					router.push(`/student/${data?.regNo}`);
 				} else {
+					if (!AppRegEx.studentCollegeEmail.test(user.email!)) {
+						handleError(
+							'Email given is invalid or not an SRM email!'
+						);
+						return;
+					}
+					await setDoc(doc(db, 'students', user.email!), {
+						name: user.displayName,
+						avatar: user.photoURL,
+						email: user.email,
+						phone: user.phoneNumber,
+						regNo: null,
+					});
 					router.push({
-						pathname: '/student/register',
-						query: { progress: 'newStudent' },
+						pathname: '/student/register/onboard',
+						query: {
+							progress: 'newStudent',
+							email: user.email,
+							phone: user.phoneNumber,
+							name: user.displayName,
+							avatar: user.photoURL,
+						},
 					});
 				}
 			} catch (error) {

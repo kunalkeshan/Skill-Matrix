@@ -14,7 +14,7 @@ export default withSessionRoute(
 
 async function logoutRoute(req: NextApiRequest, res: NextApiResponse) {
 	try {
-		if (!req.session.user.email) {
+		if (!req.session.user?.email) {
 			throw new ApiError({
 				statusCode: 401,
 				message: 'student/unauthorized-access',

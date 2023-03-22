@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { app, db } from '@/firebase';
 import { withSessionSsr } from '@/utils/withSession';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+	doc,
+	getDoc,
+	collection,
+	query,
+	where,
+	getDocs,
+} from 'firebase/firestore';
 import Head from 'next/head';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -13,6 +20,7 @@ import axios, { AxiosError } from 'axios';
 import { getAuth, GoogleAuthProvider, signOut } from 'firebase/auth';
 import PublicLayout from '@/layouts/PublicLayout';
 import { loginStudent } from '@/store/features/student';
+import { toast } from 'react-hot-toast';
 
 const auth = getAuth(app);
 
@@ -43,6 +51,15 @@ const StudentRegistrationOnboardPage = () => {
 				email: router.query.email,
 				avatar: router.query.avatar,
 			};
+			const studentsRef = collection(db, 'students');
+			const q = query(studentsRef, where('regNo', '==', data.regNo));
+			const students = await getDocs(q);
+			if (!students.empty) {
+				toast.error('Register number already exists!', {
+					position: 'bottom-right',
+				});
+				return;
+			}
 			await axios.post<AxiosBaseResponse>('/api/student/register', data);
 			dispatch(loginStudent(data as Student));
 			router.push(`/student/${values.regNo}`);
@@ -60,6 +77,14 @@ const StudentRegistrationOnboardPage = () => {
 			dispatch(showLoading(false));
 		}
 	};
+
+	useEffect(() => {
+		if (router.query.progress?.includes('newStudent')) {
+			toast('You need to create an account to access Skill Matrix!', {
+				position: 'bottom-right',
+			});
+		}
+	}, [router.events]);
 
 	return (
 		<>
