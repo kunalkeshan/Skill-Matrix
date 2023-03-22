@@ -41,6 +41,8 @@ async function registerRoute(
 			phone,
 			name,
 			regNo,
+			about: '',
+			skills: [''],
 		});
 		req.session = { ...req.session, user: { email: email } };
 		await req.session.save();

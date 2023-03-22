@@ -85,6 +85,8 @@ const StudentLoginPage = () => {
 							phone: user.phoneNumber,
 							name: user.displayName,
 							avatar: user.photoURL,
+							about: '',
+							skills: [''],
 						},
 					});
 				}
