@@ -7,6 +7,7 @@ interface Student {
 	department?: string;
 	about?: string;
 	campus?: string;
+	skills?: string[];
 	socials?: {
 		resume?: string;
 		instagram?: string;

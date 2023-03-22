@@ -75,6 +75,7 @@ const StudentRegisterPage = () => {
 						phone: user.phoneNumber,
 						regNo: null,
 						about: '',
+						skills: [''],
 					});
 					router.push({
 						pathname: '/student/register/onboard',
