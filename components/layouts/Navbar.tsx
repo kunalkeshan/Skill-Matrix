@@ -132,6 +132,13 @@ const Navbar = () => {
 										My Profile
 									</Link>
 								</li>
+								<li className='text-lg transition-all duration-300 hover:text-secondary3'>
+									<Link
+										href={`/student/${student.regNo}/settings/matrix`}
+									>
+										Edit Matrix
+									</Link>
+								</li>
 								{AUTH_NAV_LINKS.map((link, index) => (
 									<li
 										key={index}
