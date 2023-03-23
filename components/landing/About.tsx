@@ -8,7 +8,7 @@ const About = () => {
 		{
 			title: 'Matrix marks calculator - Empower students to stand out',
 			description:
-				'Our cutting-edge algorithm calculates your CCC matrix marks, helping you stand out from the crowd and achieve your dream project.',
+				'Our cutting-edge algorithm calculates your Placement matrix marks, helping you stand out from the crowd and achieve your dream project.',
 			Icon: FunctionsIcon,
 		},
 		{
@@ -37,7 +37,7 @@ const About = () => {
 					</h2>
 					<p className='text-xl mt-4 max-w-xl mx-auto text-neutral'>
 						Skill Matrix offers personalized project recommendations
-						for students and accurate CCC mark calculation for
+						for students and accurate Placement mark calculation for
 						efficient project selection.
 					</p>
 				</div>

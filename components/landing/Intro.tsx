@@ -12,8 +12,8 @@ const Intro = () => {
 					</h1>
 					<p className='mt-8 max-w-lg md:max-w-none mx-auto text-neutral text-xl md:text-2xl'>
 						Revolutionize your project team selection with our
-						innovative tool that calculates CCC matrix marks and
-						recommends the best-fit projects. Try it now!
+						innovative tool that calculates Placement matrix marks
+						and recommends the best-fit projects. Try it now!
 					</p>
 					<div className='flex gap-4 mt-12 items-center md:w-fit justify-center'>
 						<Link href={'/student/login'} className='btn'>
